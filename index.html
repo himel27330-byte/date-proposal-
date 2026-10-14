@@ -1,1 +1,396 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#100509">
+<title>A Date With Tonu ❤️</title>
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  --red: #ff3155;
+  --dark: #100509;
+  --pink: #ff9bad;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 20px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+  color: white;
+  background:
+    radial-gradient(ellipse at top, #541323 0%, transparent 65%),
+    linear-gradient(140deg, #080609, #260811, #100509);
+}
+
+.card {
+  width: 100%;
+  max-width: 410px;
+  position: relative;
+  z-index: 2;
+  padding: 28px 20px;
+  text-align: center;
+  border: 1px solid #873044;
+  border-radius: 26px;
+  background: rgba(23, 9, 14, .95);
+  box-shadow: 0 0 45px #ff315522;
+}
+
+.emoji {
+  font-size: 60px;
+  animation: beat 1.2s infinite;
+}
+
+h1 {
+  color: var(--red);
+  font-size: 30px;
+  margin: 15px 0 10px;
+}
+
+h2 { color: #ff718b; }
+
+p {
+  color: #f6dfe5;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+button, input, select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  border-radius: 30px;
+  padding: 13px 22px;
+  font-weight: bold;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#yes {
+  color: white;
+  background: linear-gradient(135deg, #ff3155, #c40035);
+  box-shadow: 0 4px 22px #ff315544;
+  transform: scale(var(--yes-scale, 1));
+  transition: transform .25s ease;
+  position: relative;
+  z-index: 2;
+}
+
+#no {
+  background: #393039;
+  color: white;
+  border: 1px solid #74616a;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  margin: 30px 0 15px;
+  min-height: 55px;
+}
+
+.screen { display: none; }
+.screen.active { display: block; animation: appear .5s ease; }
+
+.field {
+  text-align: left;
+  margin: 18px 0;
+}
+
+label {
+  display: block;
+  color: var(--pink);
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+input, select {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #754050;
+  border-radius: 12px;
+  color: white;
+  background: #24131a;
+  outline: none;
+  color-scheme: dark;
+}
+
+input:focus, select:focus {
+  border-color: var(--red);
+}
+
+.primary {
+  width: 100%;
+  margin-top: 12px;
+  color: white;
+  background: linear-gradient(135deg, #ff3155, #c40035);
+}
+
+.back {
+  background: transparent;
+  color: #ffc0cc;
+  margin-top: 8px;
+}
+
+.note {
+  color: #c6aab3;
+  font-size: 12px;
+}
+
+.floating {
+  position: fixed;
+  bottom: -35px;
+  z-index: 1;
+  pointer-events: none;
+  animation: rise linear forwards;
+}
+
+#finalMessage {
+  color: #ff8097;
+  font-size: 27px;
+  line-height: 1.5;
+}
+
+@keyframes beat {
+  0%,100% { transform: scale(1); }
+  15%,45% { transform: scale(1.13); }
+  30% { transform: scale(1); }
+}
+
+@keyframes rise {
+  to {
+    transform: translateY(-115vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 360px) {
+  h1 { font-size: 26px; }
+  .card { padding: 24px 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<main class="card">
+
+  <!-- SCREEN 1 -->
+  <section id="screen1" class="screen active">
+    <div class="emoji">❤️</div>
+    <h1>Hey Tonu!</h1>
+    <p>
+      I've got a little question for you...<br>
+      And I've been waiting to ask you.
+    </p>
+    <h2>Will you go on a date with me? 🥹</h2>
+
+    <div class="buttons">
+      <button id="yes" onclick="openDate()">Yes! ❤️</button>
+      <button id="no" onclick="handleNo()">No 🙈</button>
+    </div>
+
+    <p class="note" id="hint">Choose your answer honestly 💌</p>
+  </section>
+
+  <!-- SCREEN 2 -->
+  <section id="screen2" class="screen">
+    <div class="emoji">🥹💖</div>
+    <h1>Yay, Tonu!</h1>
+    <p>Let's plan our little date together. ✨</p>
+
+    <form id="dateForm">
+      <div class="field">
+        <label for="date">📅 Choose a date</label>
+        <input type="date" id="date" required>
+      </div>
+
+      <div class="field">
+        <label for="time">🕒 Choose a time</label>
+        <input type="time" id="time" required>
+      </div>
+
+      <div class="field">
+        <label for="type">💕 What kind of date?</label>
+        <select id="type" required>
+          <option value="">Choose your date style</option>
+          <option>☕ Coffee Date</option>
+          <option>🍽️ Dinner Date</option>
+          <option>🎬 Movie Date</option>
+          <option>🌳 Park Date</option>
+          <option>🍦 Ice Cream Date</option>
+          <option>🚶 A Little Walk Together</option>
+          <option>💌 Surprise Me!</option>
+        </select>
+      </div>
+
+      <button class="primary" type="submit">
+        Confirm Our Date 💗
+      </button>
+    </form>
+
+    <button class="back" onclick="showScreen('screen1')">
+      ← Go back
+    </button>
+    <p class="note">You can change your mind anytime. ❤️</p>
+  </section>
+
+  <!-- SCREEN 3 -->
+  <section id="screen3" class="screen">
+    <div class="emoji">💖</div>
+    <h1>It's a Date!</h1>
+
+    <p id="summary"></p>
+
+    <div style="font-size:48px; margin:20px 0">🌹💕🌹</div>
+
+    <p>
+      Thank you for making this moment special.
+      I hope we make beautiful memories together.
+    </p>
+
+    <div id="finalMessage">
+      I Love You, Tonu! ❤️
+    </div>
+
+    <p>Made with lots of love 💌</p>
+    <button class="primary" onclick="celebrate()">
+      More Love! 💕
+    </button>
+  </section>
+
+</main>
+
+<script>
+const yesButton = document.getElementById("yes");
+const noButton = document.getElementById("no");
+const hint = document.getElementById("hint");
+
+let noCount = 0;
+let yesScale = 1;
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+}
+
+function handleNo() {
+  noCount++;
+  yesScale = Math.min(1 + noCount * 0.16, 2.2);
+  yesButton.style.setProperty("--yes-scale", yesScale);
+
+  const messages = [
+    "Are you sure? 🥺",
+    "Maybe think again? 🙈",
+    "A little coffee date? ☕",
+    "Pretty please? 💗",
+    "The Yes button is getting bigger! 😂",
+    "Your choice matters, Tonu ❤️"
+  ];
+
+  noButton.textContent =
+    messages[Math.min(noCount - 1, messages.length - 1)];
+
+  hint.textContent = "No pressure, choose what feels right 💌";
+}
+
+function openDate() {
+  const dateInput = document.getElementById("date");
+  const today = new Date();
+  const localToday = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+  ].join("-");
+
+  dateInput.min = localToday;
+  showScreen("screen2");
+  burstHearts(12);
+}
+
+document.getElementById("dateForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const dateValue = document.getElementById("date").value;
+  const timeValue = document.getElementById("time").value;
+  const typeValue = document.getElementById("type").value;
+
+  const chosenDate = new Date(dateValue + "T12:00:00");
+  const prettyDate = chosenDate.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
+  const [hours, minutes] = timeValue.split(":");
+  const time = new Date();
+  time.setHours(Number(hours), Number(minutes));
+
+  const prettyTime = time.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit"
+  });
+
+  document.getElementById("summary").textContent =
+    "Our plan: " + typeValue + " 💕 On " +
+    prettyDate + " at " + prettyTime + ".";
+
+  showScreen("screen3");
+  burstHearts(35);
+});
+
+function makeHeart() {
+  const heart = document.createElement("span");
+  heart.className = "floating";
+  heart.textContent = ["❤️", "💗", "💕", "💖", "♥"][Math.floor(Math.random() * 5)];
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (18 + Math.random() * 23) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8500);
+}
+
+function burstHearts(amount) {
+  for (let i = 0; i < amount; i++) {
+    setTimeout(makeHeart, i * 100);
+  }
+}
+
+function celebrate() {
+  burstHearts(40);
+}
+
+setInterval(makeHeart, 1000);
+</script>
+
+</body>
+</html>
